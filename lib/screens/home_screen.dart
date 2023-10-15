@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:step/constants.dart';
 import 'package:step/models/response_model.dart';
@@ -46,11 +47,18 @@ class _HomeState extends State<Home> {
       notificationsCount = data['notifications_count'];
     });
   }
-
+  // void getDeviceToken(){
+  //  FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance; // Change here
+  //   _firebaseMessaging.getToken().then((token){
+  //     print("token is $token");
+  // });
+  // }
+ 
   @override
   void initState() {
     super.initState();
     getUser();
+    // getDeviceToken();
     _loadNotificationsCount();
   }
 
