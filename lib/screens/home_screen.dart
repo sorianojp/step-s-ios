@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_badger/flutter_app_badger.dart';
 import 'package:step/constants.dart';
 import 'package:step/models/response_model.dart';
 import 'package:step/models/user_model.dart';
+import 'package:step/screens/grade_screen.dart';
 import 'package:step/screens/join_screen.dart';
 import 'package:step/screens/login_screen.dart';
 import 'package:step/screens/notification_screen.dart';
@@ -53,18 +53,11 @@ class _HomeState extends State<Home> {
     });
     updateBadge();
   }
-  // void getDeviceToken(){
-  //  FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance; // Change here
-  //   _firebaseMessaging.getToken().then((token){
-  //     print("token is $token");
-  // });
-  // }
 
   @override
   void initState() {
     super.initState();
     getUser();
-    // getDeviceToken();
     _loadNotificationsCount();
   }
 
@@ -150,11 +143,22 @@ class _HomeState extends State<Home> {
               },
             ),
             ListTile(
+              leading: Icon(Icons.grade),
+              title: Text('Grades'),
+              onTap: () {
+                setState(() {
+                  currentIndex = 1;
+                  _loadNotificationsCount();
+                  Navigator.pop(context);
+                });
+              },
+            ),
+            ListTile(
               leading: Icon(Icons.person),
               title: Text('Profile'),
               onTap: () {
                 setState(() {
-                  currentIndex = 1;
+                  currentIndex = 2; // New index for Profile
                   _loadNotificationsCount();
                   Navigator.pop(context);
                 });
@@ -174,7 +178,13 @@ class _HomeState extends State<Home> {
           ],
         ),
       ),
-      body: currentIndex == 0 ? RoomScreen() : Profile(user: user),
+      body: currentIndex == 0
+          ? RoomScreen()
+          : currentIndex == 1
+              ? GradeScreen()
+              : Profile(
+                  user: user,
+                ),
       floatingActionButton: FloatingActionButton(
         elevation: 0,
         onPressed: () {
