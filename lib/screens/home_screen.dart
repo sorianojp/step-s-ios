@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_badger/flutter_app_badger.dart';
 import 'package:step/constants.dart';
 import 'package:step/models/response_model.dart';
 import 'package:step/models/user_model.dart';
@@ -41,11 +42,16 @@ class _HomeState extends State<Home> {
     }
   }
 
+  void updateBadge() {
+    FlutterAppBadger.updateBadgeCount(notificationsCount);
+  }
+
   Future<void> _loadNotificationsCount() async {
     final data = await getNotifications();
     setState(() {
       notificationsCount = data['notifications_count'];
     });
+    updateBadge();
   }
   // void getDeviceToken(){
   //  FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance; // Change here
@@ -53,7 +59,7 @@ class _HomeState extends State<Home> {
   //     print("token is $token");
   // });
   // }
- 
+
   @override
   void initState() {
     super.initState();

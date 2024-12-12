@@ -57,18 +57,16 @@ class _LoadingState extends State<Loading> {
     AndroidInitializationSettings initializationSettingsAndroid =
         const AndroidInitializationSettings('@mipmap/ic_launcher');
 
-   var initializationSettingsIOS = DarwinInitializationSettings(
+    var initializationSettingsIOS = DarwinInitializationSettings(
         requestAlertPermission: true,
         requestBadgePermission: true,
         requestSoundPermission: true,
         onDidReceiveLocalNotification:
             (int id, String? title, String? body, String? payload) async {});
 
+    var initializationSettings = InitializationSettings(
+        android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
 
-    var initializationSettings =
-        InitializationSettings(android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
-
-        
     await _flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onDidReceiveNotificationResponse:
             (NotificationResponse notificationResponse) async {});
@@ -86,13 +84,15 @@ class _LoadingState extends State<Loading> {
       styleInformation: DefaultStyleInformation(true, true),
     );
     const DarwinNotificationDetails iosPlatformChannelSpecifics =
-      DarwinNotificationDetails(
-    presentAlert: true, // Show an alert when the notification is received
-    presentBadge: true, // Update the app's badge when the notification is received
-    presentSound: true, // Play a sound when the notification is received
-  );
-    const NotificationDetails platformChannelSpecifics =
-        NotificationDetails(android: androidPlatformChannelSpecifics, iOS: iosPlatformChannelSpecifics);
+        DarwinNotificationDetails(
+      presentAlert: true, // Show an alert when the notification is received
+      presentBadge:
+          true, // Update the app's badge when the notification is received
+      presentSound: true, // Play a sound when the notification is received
+    );
+    const NotificationDetails platformChannelSpecifics = NotificationDetails(
+        android: androidPlatformChannelSpecifics,
+        iOS: iosPlatformChannelSpecifics);
     await _flutterLocalNotificationsPlugin.show(
       message.notification.hashCode,
       message.notification!.title,
